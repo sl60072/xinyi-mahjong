@@ -194,7 +194,7 @@
     /* Modal */
     .overlay{
       position:fixed;inset:0;
-      background: rgba(0,0,0,.55);
+      background: rgba(0,0,0,.68);
       display:none;
       align-items:flex-end;
       justify-content:center;
@@ -205,14 +205,14 @@
     .sheet{
       width:100%;
       max-width:520px;
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      background: linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,.5));
       border:1px solid rgba(255,255,255,.12);
       border-radius:24px;
       box-shadow: 0 30px 80px rgba(0,0,0,.55);
       overflow:hidden;
     }
     .sheetHead{
-      background: rgba(11,18,32,.7);
+      background: rgba(11,18,32,.9);
       border-bottom:1px solid rgba(255,255,255,.10);
       padding:14px 14px;
       display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -254,8 +254,8 @@
     input{
       width:100%;
       border-radius:16px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(7,10,18,.35);
+      border:1px solid rgba(255,255,255,.5=14);
+      background: rgba(7,10,18,.6);
       padding:14px 14px;
       color:var(--text);
       font-size:16px;
@@ -678,10 +678,30 @@ customChipEl.addEventListener("blur", applyCustomChip);
         const bottom = document.createElement("div");
 
         if(rec){
-          const badge = document.createElement("div");
-          badge.className = "badge";
-          badge.textContent = `中  ${rec.hands||1}將`;
-          bottom.appendChild(badge);
+    
+  const netVal = Number(rec.net || 0);
+  const result = netVal > 0 ? "贏" : netVal < 0 ? "輸" : "平";
+
+  const badge = document.createElement("div");
+  badge.className = "badge";
+  badge.textContent = `${result}  ${rec.hands || 1}將`;
+
+  badge.style.borderColor =
+    netVal > 0 ? "rgba(34,197,94,.35)" :
+    netVal < 0 ? "rgba(239,68,68,.35)" :
+    "rgba(255,255,255,.12)";
+
+  badge.style.background =
+    netVal > 0 ? "rgba(34,197,94,.10)" :
+    netVal < 0 ? "rgba(239,68,68,.10)" :
+    "rgba(255,255,255,.05)";
+
+  badge.style.color =
+    netVal > 0 ? "rgba(34,197,94,.95)" :
+    netVal < 0 ? "rgba(239,68,68,.95)" :
+    "rgba(230,232,238,.92)";
+
+  bottom.appendChild(badge);
 
           const amt = document.createElement("div");
           amt.className = "amt " + ((rec.net||0)>=0 ? "good" : "bad");
