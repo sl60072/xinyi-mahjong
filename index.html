@@ -1,13 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#111827" />
-    <title>信義分隊雀神戰</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>信義分隊雀神戰</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #0f172a, #020617);
+      color: #e5e7eb;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: #020617cc;
+      border-radius: 16px;
+      padding: 24px;
+      width: 90%;
+      max-width: 360px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    }
+    h1 {
+      margin-top: 0;
+      text-align: center;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      margin-top: 16px;
+    }
+    .log {
+      margin-top: 16px;
+      font-size: 14px;
+      opacity: .9;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>信義分隊雀神戰</h1>
+    <button id="btn">點我測試</button>
+    <div class="log" id="log">尚未點擊</div>
+  </div>
+
+  <script>
+    const btn = document.getElementById('btn');
+    const log = document.getElementById('log');
+
+    btn.addEventListener('click', () => {
+      const now = new Date().toLocaleString();
+      log.textContent = '已點擊：' + now;
+    });
+  </script>
+</body>
 </html>
