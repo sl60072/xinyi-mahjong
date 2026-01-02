@@ -387,7 +387,9 @@
           <button class="chip" data-chip="100/10">100/10</button>
           <button class="chip" data-chip="100/20">100/20</button>
           <button class="chip" data-chip="自定義">自定義</button>
-        </div>
+        </div><div id="customChipWrap" style="display:none; margin-top:10px;">
+  <input id="customChip" placeholder="輸入自定義籌碼，例如：40/20" />
+</div>
 
         <div class="label">地點</div>
         <input id="place" placeholder="例如：小明家" />
@@ -469,6 +471,8 @@
     const closeBtn = document.getElementById("closeBtn");
     const sheetTitle = document.getElementById("sheetTitle");
     const chipRow = document.getElementById("chipRow");
+    const customChipWrap = document.getElementById("customChipWrap");
+const customChipEl = document.getElementById("customChip");
     const placeEl = document.getElementById("place");
     const winEl = document.getElementById("win");
     const loseEl = document.getElementById("lose");
@@ -488,10 +492,53 @@
     }
 
     chipRow.addEventListener("click",(e)=>{
-      const btn = e.target.closest(".chip");
-      if(!btn) return;
-      setActiveChip(btn.dataset.chip);
-    });
+  const btn = e.target.closest(".chip");
+  if(!btn) return;
+
+  const val = btn.dataset.chip;
+
+  if(val === "自定義"){
+    // 顯示輸入框，並把目前值帶入（如果已經是自訂值）
+    customChipWrap.style.display = "block";
+    if(chipValue && chipValue !== "自定義"){
+      customChipEl.value = chipValue;
+    }else{
+      customChipEl.value = "";
+    }
+    setActiveChip("自定義");
+    customChipEl.focus();
+    return;
+  }
+
+  // 選固定籌碼就收起自訂輸入框
+  customChipWrap.style.display = "none";
+  customChipEl.value = "";
+  setActiveChip(val);
+});
+
+// 輸入自訂籌碼後，按 Enter 或離開輸入框就套用
+function applyCustomChip(){
+  const raw = (customChipEl.value || "").trim();
+  if(!raw) return;
+
+  // 允許：40/20、40 / 20、40-20（都會整理成 40/20）
+  const cleaned = raw.replace(/\s+/g,"").replace("-", "/");
+  if(!/^\d+\/\d+$/.test(cleaned)){
+    alert("格式請輸入：數字/數字，例如 40/20");
+    return;
+  }
+  chipValue = cleaned;          // 直接把 chipValue 變成你的自訂值
+  customChipWrap.style.display = "none";
+  setActiveChip("自定義");      // chip 按鈕維持亮著（表示是自訂）
+}
+
+customChipEl.addEventListener("keydown",(e)=>{
+  if(e.key === "Enter"){
+    applyCustomChip();
+  }
+});
+customChipEl.addEventListener("blur", applyCustomChip);
+
 
     minusBtn.addEventListener("click",()=>{
       hands = Math.max(1, hands-1);
@@ -517,14 +564,27 @@
       winEl.value = "";
       loseEl.value = "";
 
-      if(rec){
-        setActiveChip(rec.chip || "30/10");
-        hands = rec.hands || 1;
-        countNum.textContent = hands;
-        placeEl.value = rec.place || "";
-        winEl.value = rec.win ? String(rec.win) : "";
-        loseEl.value = rec.lose ? String(rec.lose) : "";
-      }
+     if(rec){
+  const c = rec.chip || "30/10";
+  if(["30/10","50/20","100/10","100/20"].includes(c)){
+    customChipWrap.style.display = "none";
+    customChipEl.value = "";
+    setActiveChip(c);
+  }else{
+    // 不是固定選項 → 視為自訂
+    customChipWrap.style.display = "block";
+    customChipEl.value = c;
+    chipValue = c;
+    setActiveChip("自定義");
+  }
+
+  hands = rec.hands || 1;
+  countNum.textContent = hands;
+  placeEl.value = rec.place || "";
+  winEl.value = rec.win ? String(rec.win) : "";
+  loseEl.value = rec.lose ? String(rec.lose) : "";
+}
+
 
       overlay.classList.add("show");
     }
