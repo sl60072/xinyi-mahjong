@@ -1,0 +1,22 @@
+body{
+  margin:0;
+  background:#0b1220;
+  color:#e5e7eb;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;
+}
+button{
+  background:#111827;
+  color:#e5e7eb;
+  border:1px solid #374151;
+  border-radius:8px;
+  padding:6px 10px;
+  margin-right:6px;
+}
+input,select{
+  background:#111827;
+  color:#e5e7eb;
+  border:1px solid #374151;
+  border-radius:6px;
+  padding:6px;
+  margin:4px 0;
+}
