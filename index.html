@@ -1,65 +1,688 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0B1220" />
   <title>信義分隊雀神戰</title>
   <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(180deg, #0f172a, #020617);
-      color: #e5e7eb;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    :root{
+      --bg0:#070A12;
+      --bg1:#0B1220;
+      --card:#0F172A;
+      --card2:#0B1326;
+      --text:#E6E8EE;
+      --muted:#A6ADBB;
+      --line:rgba(255,255,255,.08);
+      --good:#22C55E;
+      --bad:#EF4444;
+      --net:#60A5FA;
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --shadow2: 0 8px 26px rgba(0,0,0,.28);
+      --radius:18px;
     }
-    .card {
-      background: #020617cc;
-      border-radius: 16px;
-      padding: 24px;
-      width: 90%;
-      max-width: 360px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC",system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 50% -120px, rgba(96,165,250,.20), transparent 60%),
+        radial-gradient(900px 450px at 100% 0%, rgba(34,197,94,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
+      min-height:100vh;
     }
-    h1 {
-      margin-top: 0;
-      text-align: center;
+    .wrap{max-width:520px;margin:0 auto;padding:18px 14px 34px;}
+    .hero{
+      border-radius:22px;
+      padding:22px 18px 18px;
+      background:
+        radial-gradient(800px 220px at 50% 0%, rgba(255,255,255,.10), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
     }
-    button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: none;
-      background: #2563eb;
-      color: white;
-      font-size: 16px;
-      margin-top: 16px;
+    .hero::after{
+      content:"";
+      position:absolute;inset:-2px;
+      background:
+        linear-gradient(90deg, rgba(96,165,250,.18), rgba(34,197,94,.12), rgba(255,255,255,0));
+      opacity:.35;
+      filter: blur(20px);
+      z-index:0;
     }
-    .log {
-      margin-top: 16px;
-      font-size: 14px;
-      opacity: .9;
-      text-align: center;
+    .hero-inner{position:relative;z-index:1}
+    .titleRow{display:flex;align-items:center;gap:10px;justify-content:space-between}
+    .appTitle{
+      font-size:22px;
+      font-weight:800;
+      letter-spacing:.5px;
+    }
+    .subTitle{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .pill{
+      font-size:12px;
+      color:rgba(230,232,238,.9);
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      padding:7px 10px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+
+    .stats{display:flex;flex-direction:column;gap:12px;margin-top:14px;}
+    .statCard{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px 14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      box-shadow:var(--shadow2);
+    }
+    .icon{
+      width:44px;height:44px;border-radius:14px;
+      display:grid;place-items:center;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      flex:0 0 auto;
+      font-size:18px;
+    }
+    .statMeta{flex:1}
+    .statLabel{font-size:13px;color:var(--muted);margin-bottom:4px;font-weight:600}
+    .statValue{font-size:26px;font-weight:900;letter-spacing:.5px}
+    .v-good{color:var(--good)}
+    .v-bad{color:var(--bad)}
+    .v-net{color:var(--net)}
+
+    .section{
+      margin-top:16px;
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:14px 12px 12px;
+      box-shadow:var(--shadow2);
+    }
+    .calHead{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:4px 6px 10px;
+      gap:10px;
+    }
+    .calTitle{
+      font-weight:900;
+      font-size:18px;
+      letter-spacing:.6px;
+    }
+    .navBtn{
+      width:38px;height:38px;border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      font-size:18px;
+    }
+    .dow{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap:8px;
+      padding:0 6px 10px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+      text-align:center;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap:8px;
+      padding:0 6px 8px;
+    }
+    .cell{
+      height:58px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.07);
+      background: rgba(7,10,18,.35);
+      padding:8px 8px 6px;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .cell.muted{
+      opacity:.35;
+    }
+    .dayNum{
+      font-size:12px;
+      color:rgba(230,232,238,.85);
+      font-weight:800;
+    }
+    .badge{
+      align-self:flex-start;
+      display:inline-flex;
+      gap:6px;
+      align-items:center;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      font-size:11px;
+      font-weight:800;
+      color:rgba(230,232,238,.92);
+      max-width:100%;
+    }
+    .amt{
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .amt.good{color:var(--good)}
+    .amt.bad{color:var(--bad)}
+    .cell:active{
+      transform: scale(.985);
+      transition: transform .05s ease;
+    }
+
+    /* Modal */
+    .overlay{
+      position:fixed;inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:flex-end;
+      justify-content:center;
+      padding:14px;
+      z-index:999;
+    }
+    .overlay.show{display:flex;}
+    .sheet{
+      width:100%;
+      max-width:520px;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:24px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.55);
+      overflow:hidden;
+    }
+    .sheetHead{
+      background: rgba(11,18,32,.7);
+      border-bottom:1px solid rgba(255,255,255,.10);
+      padding:14px 14px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .sheetTitle{
+      font-weight:900;
+      letter-spacing:.6px;
+      display:flex;align-items:center;gap:10px;
+    }
+    .closeBtn{
+      width:38px;height:38px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      font-size:18px;
+    }
+    .sheetBody{padding:14px;}
+    .row{display:flex;gap:10px;align-items:center;margin-bottom:12px;}
+    .label{
+      font-size:13px;
+      color:var(--muted);
+      font-weight:800;
+      margin:8px 0 6px;
+    }
+    .chips{display:flex;gap:10px;flex-wrap:wrap;}
+    .chip{
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      font-weight:900;
+      font-size:13px;
+      color:rgba(230,232,238,.92);
+    }
+    .chip.active{
+      border-color: rgba(96,165,250,.55);
+      background: rgba(96,165,250,.14);
+    }
+    input{
+      width:100%;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(7,10,18,.35);
+      padding:14px 14px;
+      color:var(--text);
+      font-size:16px;
+      outline:none;
+    }
+    input::placeholder{color:rgba(166,173,187,.7)}
+    .split{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .counter{
+      display:flex;align-items:center;justify-content:space-between;
+      background: rgba(7,10,18,.35);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:18px;
+      padding:12px 12px;
+    }
+    .counterLeft{
+      display:flex;flex-direction:column;gap:4px;
+    }
+    .counterTitle{font-weight:900}
+    .counterSub{font-size:12px;color:var(--muted);font-weight:700}
+    .counterBtns{display:flex;align-items:center;gap:10px;}
+    .miniBtn{
+      width:40px;height:40px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      font-size:18px;
+      font-weight:900;
+    }
+    .countNum{width:26px;text-align:center;font-weight:900;font-size:18px;}
+    .save{
+      width:100%;
+      margin-top:12px;
+      padding:14px 14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(96,165,250,.28), rgba(96,165,250,.12));
+      color:rgba(230,232,238,.95);
+      font-weight:900;
+      font-size:16px;
+    }
+    .hint{
+      margin-top:10px;
+      color:rgba(166,173,187,.85);
+      font-size:12px;
+      line-height:1.4;
+      text-align:center;
+    }
+    .topMsg{
+      margin-top:10px;
+      font-size:12px;
+      color:rgba(166,173,187,.9);
+      text-align:center;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>信義分隊雀神戰</h1>
-    <button id="btn">點我測試</button>
-    <div class="log" id="log">尚未點擊</div>
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="titleRow">
+          <div>
+            <div class="appTitle">信義分隊雀神戰</div>
+            <div class="subTitle">手氣旺旺來，每一將都贏（資料只存在你的 iPhone）</div>
+          </div>
+          <div class="pill" id="yearPill">2026</div>
+        </div>
+
+        <div class="stats">
+          <div class="statCard">
+            <div class="icon">📈</div>
+            <div class="statMeta">
+              <div class="statLabel">今年總贏</div>
+              <div class="statValue v-good" id="sumWin">NT$0</div>
+            </div>
+          </div>
+
+          <div class="statCard">
+            <div class="icon">📉</div>
+            <div class="statMeta">
+              <div class="statLabel">今年總輸</div>
+              <div class="statValue v-bad" id="sumLose">NT$0</div>
+            </div>
+          </div>
+
+          <div class="statCard">
+            <div class="icon">🧾</div>
+            <div class="statMeta">
+              <div class="statLabel">淨收支</div>
+              <div class="statValue v-net" id="sumNet">NT$0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="topMsg" id="topMsg"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="calHead">
+        <button class="navBtn" id="prevBtn">‹</button>
+        <div class="calTitle" id="calTitle">2026年 1月</div>
+        <button class="navBtn" id="nextBtn">›</button>
+      </div>
+
+      <div class="dow">
+        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+      </div>
+
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="overlay" id="overlay">
+    <div class="sheet">
+      <div class="sheetHead">
+        <div class="sheetTitle" id="sheetTitle">🀄 戰況紀錄</div>
+        <button class="closeBtn" id="closeBtn">✕</button>
+      </div>
+      <div class="sheetBody">
+        <div class="label">籌碼（底/台）</div>
+        <div class="chips" id="chipRow">
+          <button class="chip" data-chip="30/10">30/10</button>
+          <button class="chip" data-chip="50/20">50/20</button>
+          <button class="chip" data-chip="100/10">100/10</button>
+          <button class="chip" data-chip="100/20">100/20</button>
+          <button class="chip" data-chip="自定義">自定義</button>
+        </div>
+
+        <div class="label">地點</div>
+        <input id="place" placeholder="例如：小明家" />
+
+        <div class="label">打了幾將？</div>
+        <div class="counter">
+          <div class="counterLeft">
+            <div class="counterTitle">一將</div>
+            <div class="counterSub">一將四圈</div>
+          </div>
+          <div class="counterBtns">
+            <button class="miniBtn" id="minusBtn">−</button>
+            <div class="countNum" id="countNum">1</div>
+            <button class="miniBtn" id="plusBtn">＋</button>
+          </div>
+        </div>
+
+        <div class="label">金額（NT$）</div>
+        <div class="split">
+          <div>
+            <div class="label" style="margin-top:0;color:rgba(34,197,94,.9);">贏多少錢（+）</div>
+            <input id="win" inputmode="numeric" placeholder="0" />
+          </div>
+          <div>
+            <div class="label" style="margin-top:0;color:rgba(239,68,68,.92);">輸多少錢（-）</div>
+            <input id="lose" inputmode="numeric" placeholder="0" />
+          </div>
+        </div>
+
+        <button class="save" id="saveBtn">💰 記錄這場戰績</button>
+        <div class="hint">提示：同一天再次記錄會「覆蓋」那天資料（可事後修改）。</div>
+      </div>
+    </div>
   </div>
 
   <script>
-    const btn = document.getElementById('btn');
-    const log = document.getElementById('log');
+    // ----- storage -----
+    const KEY = "xinyi_mahjong_v1";
+    function loadAll(){
+      try{ return JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ return {}; }
+    }
+    function saveAll(obj){
+      localStorage.setItem(KEY, JSON.stringify(obj));
+    }
+    function ymd(d){
+      const y=d.getFullYear();
+      const m=String(d.getMonth()+1).padStart(2,"0");
+      const dd=String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${dd}`;
+    }
+    function fmt(n){
+      const v = Number(n||0);
+      const sign = v<0 ? "-" : "";
+      const abs = Math.abs(v);
+      return `NT$${sign}${abs.toLocaleString("zh-Hant-TW")}`;
+    }
+    function toInt(s){
+      const t = String(s||"").replace(/[^\d\-]/g,"");
+      const v = parseInt(t,10);
+      return Number.isFinite(v)? v:0;
+    }
 
-    btn.addEventListener('click', () => {
-      const now = new Date().toLocaleString();
-      log.textContent = '已點擊：' + now;
+    // ----- state -----
+    const now = new Date();
+    let viewY = now.getFullYear();
+    let viewM = now.getMonth(); // 0-11
+    let selectedDate = null;
+
+    // ----- elements -----
+    const yearPill = document.getElementById("yearPill");
+    const calTitle = document.getElementById("calTitle");
+    const grid = document.getElementById("grid");
+    const sumWin = document.getElementById("sumWin");
+    const sumLose = document.getElementById("sumLose");
+    const sumNet = document.getElementById("sumNet");
+    const topMsg = document.getElementById("topMsg");
+
+    const overlay = document.getElementById("overlay");
+    const closeBtn = document.getElementById("closeBtn");
+    const sheetTitle = document.getElementById("sheetTitle");
+    const chipRow = document.getElementById("chipRow");
+    const placeEl = document.getElementById("place");
+    const winEl = document.getElementById("win");
+    const loseEl = document.getElementById("lose");
+    const countNum = document.getElementById("countNum");
+    const minusBtn = document.getElementById("minusBtn");
+    const plusBtn = document.getElementById("plusBtn");
+    const saveBtn = document.getElementById("saveBtn");
+
+    let chipValue = "30/10";
+    let hands = 1;
+
+    function setActiveChip(val){
+      chipValue = val;
+      [...chipRow.querySelectorAll(".chip")].forEach(b=>{
+        b.classList.toggle("active", b.dataset.chip===val);
+      });
+    }
+
+    chipRow.addEventListener("click",(e)=>{
+      const btn = e.target.closest(".chip");
+      if(!btn) return;
+      setActiveChip(btn.dataset.chip);
     });
+
+    minusBtn.addEventListener("click",()=>{
+      hands = Math.max(1, hands-1);
+      countNum.textContent = hands;
+    });
+    plusBtn.addEventListener("click",()=>{
+      hands = Math.min(99, hands+1);
+      countNum.textContent = hands;
+    });
+
+    function openSheet(dateStr){
+      selectedDate = dateStr;
+      sheetTitle.textContent = `🀄 ${dateStr} 戰況紀錄`;
+
+      const all = loadAll();
+      const rec = all[dateStr];
+
+      // defaults
+      setActiveChip("30/10");
+      hands = 1;
+      countNum.textContent = hands;
+      placeEl.value = "";
+      winEl.value = "";
+      loseEl.value = "";
+
+      if(rec){
+        setActiveChip(rec.chip || "30/10");
+        hands = rec.hands || 1;
+        countNum.textContent = hands;
+        placeEl.value = rec.place || "";
+        winEl.value = rec.win ? String(rec.win) : "";
+        loseEl.value = rec.lose ? String(rec.lose) : "";
+      }
+
+      overlay.classList.add("show");
+    }
+    function closeSheet(){
+      overlay.classList.remove("show");
+    }
+    closeBtn.addEventListener("click", closeSheet);
+    overlay.addEventListener("click",(e)=>{
+      if(e.target===overlay) closeSheet();
+    });
+
+    saveBtn.addEventListener("click",()=>{
+      if(!selectedDate) return;
+
+      const win = Math.max(0, toInt(winEl.value));
+      const lose = Math.max(0, toInt(loseEl.value));
+      const place = placeEl.value.trim();
+
+      const all = loadAll();
+      all[selectedDate] = {
+        chip: chipValue,
+        place,
+        hands,
+        win,
+        lose,
+        net: win - lose,
+        updatedAt: new Date().toISOString()
+      };
+      saveAll(all);
+      render();
+      closeSheet();
+    });
+
+    document.getElementById("prevBtn").addEventListener("click",()=>{
+      viewM--;
+      if(viewM<0){ viewM=11; viewY--; }
+      render();
+    });
+    document.getElementById("nextBtn").addEventListener("click",()=>{
+      viewM++;
+      if(viewM>11){ viewM=0; viewY++; }
+      render();
+    });
+
+    function monthName(y,m){
+      return `${y}年 ${m+1}月`;
+    }
+
+    function buildCalendar(y,m){
+      grid.innerHTML = "";
+
+      const first = new Date(y,m,1);
+      const startDow = first.getDay(); // 0 Sun
+      const daysInMonth = new Date(y,m+1,0).getDate();
+
+      // prev month filler
+      const prevDays = new Date(y,m,0).getDate();
+
+      // total 6 weeks view
+      const totalCells = 42;
+
+      const all = loadAll();
+
+      for(let i=0;i<totalCells;i++){
+        const cell = document.createElement("div");
+        cell.className = "cell";
+
+        let day;
+        let cellDate;
+
+        if(i < startDow){
+          day = prevDays - (startDow-1-i);
+          cell.classList.add("muted");
+          cellDate = new Date(y,m-1,day);
+        }else if(i >= startDow + daysInMonth){
+          day = i - (startDow + daysInMonth) + 1;
+          cell.classList.add("muted");
+          cellDate = new Date(y,m+1,day);
+        }else{
+          day = i - startDow + 1;
+          cellDate = new Date(y,m,day);
+        }
+
+        const dateStr = ymd(cellDate);
+        const rec = all[dateStr];
+
+        const top = document.createElement("div");
+        top.className = "dayNum";
+        top.textContent = day;
+
+        const bottom = document.createElement("div");
+
+        if(rec){
+          const badge = document.createElement("div");
+          badge.className = "badge";
+          badge.textContent = `中  ${rec.hands||1}將`;
+          bottom.appendChild(badge);
+
+          const amt = document.createElement("div");
+          amt.className = "amt " + ((rec.net||0)>=0 ? "good" : "bad");
+          amt.textContent = (rec.net||0)>=0 ? `+${fmt(rec.net).replace("NT$","")}` : `-${fmt(Math.abs(rec.net)).replace("NT$","")}`;
+          bottom.appendChild(amt);
+        }else{
+          const spacer = document.createElement("div");
+          spacer.style.height = "18px";
+          bottom.appendChild(spacer);
+        }
+
+        cell.appendChild(top);
+        cell.appendChild(bottom);
+
+        cell.addEventListener("click",()=>{
+          openSheet(dateStr);
+        });
+
+        grid.appendChild(cell);
+      }
+    }
+
+    function calcYearStats(year){
+      const all = loadAll();
+      let w=0,l=0;
+      for(const k in all){
+        if(!k.startsWith(String(year)+"-")) continue;
+        const rec = all[k] || {};
+        w += Number(rec.win||0);
+        l += Number(rec.lose||0);
+      }
+      return {win:w, lose:l, net:w-l};
+    }
+
+    function render(){
+      yearPill.textContent = String(viewY);
+      calTitle.textContent = monthName(viewY, viewM);
+
+      // calendar
+      buildCalendar(viewY, viewM);
+
+      // stats for year of current view
+      const st = calcYearStats(viewY);
+      sumWin.textContent = fmt(st.win);
+      sumLose.textContent = fmt(st.lose);
+      sumNet.textContent = fmt(st.net);
+      sumNet.className = "statValue " + (st.net>=0 ? "v-net" : "v-bad");
+
+      // small message
+      const all = loadAll();
+      const today = ymd(new Date());
+      if(all[today]){
+        topMsg.textContent = `今天（${today}）已記錄，可點日曆修改。`;
+      }else{
+        topMsg.textContent = `提示：點日曆日期即可新增/修改當天戰績。`;
+      }
+    }
+
+    // init
+    setActiveChip("30/10");
+    render();
   </script>
 </body>
 </html>
