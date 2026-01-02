@@ -233,8 +233,8 @@
     .row{display:flex;gap:10px;align-items:center;margin-bottom:12px;}
     .label{
       font-size:13px;
-      color:var(--muted);
-      font-weight:800;
+      color:rgba(17,24,39,.85);   /* 深灰偏黑 */
+      font-weight:900;           /* 加粗 */
       margin:8px 0 6px;
     }
     .chips{display:flex;gap:10px;flex-wrap:wrap;}
@@ -245,11 +245,12 @@
       background: rgba(255,255,255,.8);
       font-weight:900;
       font-size:13px;
-      color:rgba(230,232,238,.92);
+      color:#111827;
     }
     .chip.active{
       border-color: rgba(96,165,250,.8);
       background: rgba(96,165,250,.8);
+      color:#0f172a;              /* 不要白字，否則會虛 */
     }
     input{
       width:100%;
@@ -267,28 +268,35 @@
       grid-template-columns: 1fr 1fr;
       gap:10px;
     }
-    .counter{
-      display:flex;align-items:center;justify-content:space-between;
-      background: rgba(7,10,18,.35);
-      border:1px solid rgba(255,255,255,.3);
-      border-radius:18px;
-      padding:12px 12px;
-    }
-    .counterLeft{
-      display:flex;flex-direction:column;gap:4px;
-    }
-    .counterTitle{font-weight:900}
-    .counterSub{font-size:12px;color:var(--muted);font-weight:700}
-    .counterBtns{display:flex;align-items:center;gap:10px;}
-    .miniBtn{
-      width:40px;height:40px;border-radius:14px;
-      border:1px solid rgba(255,255,255,.3);
-      background: rgba(255,255,255,.7);
-      color:var(--text);
-      font-size:18px;
-      font-weight:900;
-    }
-    .countNum{width:26px;text-align:center;font-weight:900;font-size:18px;}
+   .counter{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background: rgba(255,255,255,.88);
+  border:1px solid rgba(0,0,0,.12);
+  border-radius:18px;
+  padding:12px 12px;
+}
+
+.counterTitle{
+  font-weight:900;
+  color:#111827;
+}
+
+.counterSub{
+  font-size:12px;
+  color:rgba(55,65,81,.9);
+  font-weight:700;
+}
+
+.countNum{
+  width:26px;
+  text-align:center;
+  font-weight:900;
+  font-size:18px;
+  color:#111827;
+}
+
     .save{
       width:100%;
       margin-top:12px;
